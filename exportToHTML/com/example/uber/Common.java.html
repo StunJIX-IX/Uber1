@@ -1,0 +1,91 @@
+<html>
+<head>
+<title>Common.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Common.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.uber</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.app.Notification</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.NotificationChannel</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.NotificationManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.app.PendingIntent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.graphics.Bitmap</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.graphics.BitmapFactory</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.graphics.Color</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Build</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.core.app.NotificationCompat</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.example.uber.Model.DriverInfoModel</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">Common {</span>
+    <span class="s0">public static final </span><span class="s1">String DRIVER_INFO_REFERENCE = </span><span class="s2">&quot;DriverInfo&quot;</span><span class="s0">;</span>
+    <span class="s0">public static final </span><span class="s1">String DRIVERS_LOCATION_REFERENCES = </span><span class="s2">&quot;DriversLocation&quot;</span><span class="s0">;</span>
+    <span class="s0">public static final </span><span class="s1">String TOKEN_REFERENCE = </span><span class="s2">&quot;Token&quot;</span><span class="s0">;</span>
+    <span class="s0">public static final </span><span class="s1">String NOTI_TITLE = </span><span class="s2">&quot;title&quot;</span><span class="s0">;</span>
+    <span class="s0">public static final </span><span class="s1">String NOTI_CONTENT = </span><span class="s2">&quot;body&quot;</span><span class="s0">;</span>
+
+    <span class="s0">public static </span><span class="s1">DriverInfoModel currentUser</span><span class="s0">;</span>
+
+    <span class="s0">public static </span><span class="s1">Object buildWelcomeMessage ( ) {</span>
+        <span class="s0">if</span><span class="s1">(Common.currentUser != </span><span class="s0">null</span><span class="s1">)</span>
+        <span class="s1">{</span>
+            <span class="s0">return new </span><span class="s1">StringBuilder (</span><span class="s2">&quot;Welcome&quot;</span><span class="s1">)</span>
+                    <span class="s1">.append (Common.currentUser.getFirstName ())</span>
+                    <span class="s1">.append (</span><span class="s2">&quot; &quot;</span><span class="s1">)</span>
+                    <span class="s1">.append(Common.currentUser.getLastName ().toString ())</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">else</span>
+            <span class="s0">return </span><span class="s2">&quot;&quot;</span><span class="s0">;</span>
+<span class="s1">}</span>
+
+    <span class="s0">public static void </span><span class="s1">showNotification (Context context</span><span class="s0">, int </span><span class="s1">id</span><span class="s0">, </span><span class="s1">String title</span><span class="s0">, </span><span class="s1">String body</span><span class="s0">, </span><span class="s1">Intent intent) {</span>
+        <span class="s1">PendingIntent pendingIntent = </span><span class="s0">null;</span>
+            <span class="s1">pendingIntent = PendingIntent.getActivity (context</span><span class="s0">,</span><span class="s1">id</span><span class="s0">,</span><span class="s1">intent</span><span class="s0">,</span><span class="s1">PendingIntent.FLAG_UPDATE_CURRENT )</span><span class="s0">;</span>
+        <span class="s1">String NOTIFICATION_CHANNEL_ID = </span><span class="s2">&quot;uber&quot;</span><span class="s0">;</span>
+        <span class="s1">NotificationManager notificationManager = (NotificationManager)context.getSystemService (Context.NOTIFICATION_SERVICE )</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.O)</span>
+        <span class="s1">{</span>
+            <span class="s1">NotificationChannel notificationChannel = </span><span class="s0">new </span><span class="s1">NotificationChannel (NOTIFICATION_CHANNEL_ID</span><span class="s0">,</span>
+                    <span class="s2">&quot;Uber&quot;</span><span class="s0">, </span><span class="s1">NotificationManager.IMPORTANCE_HIGH)</span><span class="s0">;</span>
+            <span class="s1">notificationChannel.setDescription ( </span><span class="s2">&quot;Uber&quot; </span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">notificationChannel.enableLights ( </span><span class="s0">true </span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">notificationChannel.setLightColor ( Color.RED )</span><span class="s0">;</span>
+            <span class="s1">notificationChannel.setVibrationPattern ( </span><span class="s0">new long</span><span class="s1">[]{</span><span class="s3">0</span><span class="s0">,</span><span class="s3">1000</span><span class="s0">,</span><span class="s3">500</span><span class="s0">,</span><span class="s3">1000</span><span class="s1">} )</span><span class="s0">;</span>
+            <span class="s1">notificationChannel.enableVibration (</span><span class="s0">true </span><span class="s1">)</span><span class="s0">;</span>
+
+            <span class="s1">notificationManager.createNotificationChannel (notificationChannel)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">NotificationCompat.Builder builder = </span><span class="s0">new </span><span class="s1">NotificationCompat.Builder (context</span><span class="s0">,</span><span class="s1">NOTIFICATION_CHANNEL_ID)</span><span class="s0">;</span>
+        <span class="s1">builder.setContentTitle (title)</span>
+                <span class="s1">.setContentText (body)</span>
+                <span class="s1">.setAutoCancel (</span><span class="s0">false</span><span class="s1">)</span>
+                <span class="s1">.setPriority (NotificationCompat.PRIORITY_HIGH)</span>
+                <span class="s1">.setDefaults ( Notification.DEFAULT_VIBRATE)</span>
+                <span class="s1">.setSmallIcon (R.drawable.ic_baseline_directions_car_24)</span>
+                <span class="s1">.setLargeIcon ( BitmapFactory.decodeResource (context.getResources ()</span><span class="s0">,</span><span class="s1">R.drawable.ic_baseline_directions_car_24) )</span><span class="s0">;</span>
+        <span class="s0">if</span><span class="s1">(pendingIntent != </span><span class="s0">null</span><span class="s1">)</span>
+        <span class="s1">{</span>
+            <span class="s1">builder.setContentIntent(pendingIntent)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">Notification notification = builder.build ()</span><span class="s0">;</span>
+        <span class="s1">notificationManager.notify (id</span><span class="s0">,</span><span class="s1">notification)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>
